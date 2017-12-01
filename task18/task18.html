@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul li{
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            display: inline-block;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <input type="text" id="inputText" placeholder>
+    <input type="button" id="inputLeftIn" value="左侧入">
+    <input type="button" id="inputRightIn" value="右侧入">
+    <input type="button" id="inputLeftOut" value="左侧出">
+    <input type="button" id="inputRightOut" value="右侧出">
+</div>
+<ul id="content"></ul>
+<script src="../scripts/EventUtil.js"></script>
+<script>
+    var text=document.getElementById("inputText");
+    var leftIn=document.getElementById("inputLeftIn");
+    var rightIn=document.getElementById("inputRightIn");
+    var leftOut=document.getElementById("inputLeftOut");
+    var rightOut=document.getElementById("inputRightOut");
+    var content=document.getElementById("content");
+    function insertAfter(newElement,targetElement) {
+        var parent=targetElement.parentNode;
+        if(parent.lastChild===targetElement){
+            parent.appendChild(newElement);
+        }else {
+            parent.insertBefore(newElement,targetElement.nextSibling);
+        }
+    }
+    EventUtil.addHandler(text,"blur",function (event) {
+        if(!text.value.match(/^\d+$/)){
+            alert("请输入正整数~");
+            text.value="";
+        }
+    });
+    EventUtil.addHandler(leftIn,"click",function (event) {
+        if(text.value===""||text.value===null){return false;}
+        var li=document.createElement("li");
+        var li_text=document.createTextNode(text.value);
+        li.appendChild(li_text);
+        if(content.innerHTML===""){
+            content.appendChild(li);
+        }else {
+            content.insertBefore(li,content.childNodes[0]);
+        }
+
+    });
+    EventUtil.addHandler(rightIn,"click",function (event) {
+        if(text.value===""||text.value===null) return false;
+        var li=document.createElement("li");
+        var li_text=document.createTextNode(text.value);
+        li.appendChild(li_text);
+        content.appendChild(li);
+    });
+    EventUtil.addHandler(leftOut,"click",function (event) {
+        if(text.value===""||text.value===null){
+            alert("请输入正整数~");
+        }
+        content.removeChild(content.firstChild);
+    });
+    EventUtil.addHandler(rightOut,"click",function (event) {
+        if(text.value===""||text.value===null){
+            alert("请输入正整数~");
+        }
+        content.removeChild(content.lastChild);
+
+    })
+
+</script>
+
+</body>
+</html>
